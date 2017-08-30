@@ -1,0 +1,41 @@
+---
+title: "SQL"
+output: html_document
+---
+
+#Level one header
+##leavel 2 header
+###level 3 header
+
+You can type normally to write paragraphs that will appear in your documents
+
+* Item one in a list
+* Item 2
+* Item 3
+* Item 4
+
+This is how to make a table with multiple columns
+
+column 1 | cloumn 2
+---|---
+Lions | NFC
+Patriots | AFC
+Buccaneers | AFC
+Eagles | NFC
+
+
+<img src="gsd.jpg" width="300"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
