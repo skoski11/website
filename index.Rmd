@@ -2,7 +2,10 @@
 title: "SQL"
 output: html_document
 ---
-
+```{r}
+library(Lahman)
+library(sqldf)
+```
 #Level one header
 ##leavel 2 header
 ###level 3 header
@@ -30,7 +33,7 @@ Eagles | NFC
 Baseball Facts
 First Fact, I absolutely hate baseball.
 
-Now here is some hard data:
+These are examples of ques run that gather different data and also show how we can organize how the information will be displayed, example the 4th one.
 
 ```{r}
 query<-"SELECT playerID,yearID,teamID,HR FROM Batting
@@ -45,9 +48,11 @@ query<-"SELECT playerID,yearID,teamID,HR,SO FROM Batting
 WHERE HR> 40 and SO<=60"
 sqldf(query)
 
+query<-"SELECT playerID,teamID,yearID,HR FROM Batting
+WHERE HR>50
+ORDER BY HR DESC"
+sqldf(query)
 ```
-
-
 
 
 
