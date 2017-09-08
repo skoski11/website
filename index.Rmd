@@ -27,8 +27,25 @@ Eagles | NFC
 <img src="gsd.jpg" width="300"/>
 
 
+Baseball Facts
+First Fact, I absolutely hate baseball.
 
+Now here is some hard data:
 
+```{r}
+query<-"SELECT playerID,yearID,teamID,HR FROM Batting
+WHERE teamID='PHI' and yearID>=1970 and yearID<=1979 and HR>= 30"
+sqldf(query)
+
+query<-"SELECT playerID,yearID,teamID,HR FROM Batting
+WHERE teamID='NYA' and HR> 40"
+sqldf(query)
+
+query<-"SELECT playerID,yearID,teamID,HR,SO FROM Batting
+WHERE HR> 40 and SO<=60"
+sqldf(query)
+
+```
 
 
 
