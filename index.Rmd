@@ -77,6 +77,32 @@ GROUP BY playerID
 HAVING avg(HR)>= 30
 ORDER BY avg(HR) DESC"
 sqldf(query)
+
+#This is us testing how to draw from multiple index at one
+#Time and combine responses from these
+query<-"SELECT nameFirst, nameLast, teamID, yearID, HR
+FROM Batting INNER JOIN Master
+On Batting.playerID=Master.playerID
+WHERE Batting.playerID='ruthba01'"
+sqldf(query)
+#Draw from two queries
+
+#Drew from two querries and replaced playerID with
+#Real name
+query<-"SELECT nameFirst, nameLast, teamID, yearID, HR
+FROM Batting INNER JOIN Master
+On Batting.playerID=Master.playerID
+WHERE HR> 50
+ORDER BY HR DESC"
+sqldf(query)
+
+query<-"SELECT playerID,name,Batting.yearID, Batting.HR
+FROM Batting INNER JOIN Teams
+On Batting.teamID=Teams.teamID and Batting.yearID=Teams.yearID
+WHERE playerID='ruthba01'"
+sqldf(query)
+
+
 ```
 
 
