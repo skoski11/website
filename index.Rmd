@@ -52,9 +52,32 @@ query<-"SELECT playerID,teamID,yearID,HR FROM Batting
 WHERE HR>50
 ORDER BY HR DESC"
 sqldf(query)
+
+
+# This finds and sorts who has had the fewest strikeouts in a season with atleast 400 at bats
+query<-"SELECT teamID, playerID, yearID, SO, AB FROM Batting
+WHERE AB>= 400 and SO< 10
+ORDER BY SO"
+sqldf(query)
+
+query<-"SELECT playerID,sum(HR) FROM Batting
+WHERE playerID='ruthba01'
+GROUP BY playerID"
+sqldf(query)
+
+#Filter before group is where, and filter after group uses having
+query<-"SELECT playerID,sum(HR) FROM Batting
+GROUP BY playerID
+HAVING sum(HR)>= 600
+ORDER BY sum(HR) DESC"
+sqldf(query)
+#sum() avg() max() min() are all useable fucntions
+query<-"SELECT playerID,avg(HR) FROM Batting
+GROUP BY playerID
+HAVING avg(HR)>= 30
+ORDER BY avg(HR) DESC"
+sqldf(query)
 ```
-
-
 
 
 
