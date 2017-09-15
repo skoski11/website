@@ -102,6 +102,38 @@ On Batting.teamID=Teams.teamID and Batting.yearID=Teams.yearID
 WHERE playerID='ruthba01'"
 sqldf(query)
 
+#This gives all the full data of all of Babe Ruth's Seasons with whole
+#Names for his teams and himself
+query<-"SELECT nameFirst,nameLast,name,Batting.yearID,Batting.HR 
+FROM (Batting INNER JOIN Master
+On Batting.playerID=Master.playerID) INNER JOIN Teams
+On Batting.teamID=Teams.teamID AND Batting.yearID=Teams.yearID
+WHERE Batting.playerID ='ruthba01'"
+sqldf(query)
+
+
+#Finds all people ever with over 600 career homeruns and gives their full name
+#and team name
+query<-"SELECT nameFirst,nameLast,name,sum(Batting.HR),Batting.yearID 
+FROM (Batting INNER JOIN Master
+On Batting.playerID=Master.playerID) INNER JOIN Teams 
+On Batting.teamID=Teams.teamID AND Batting.yearID=Teams.yearID
+GROUP BY Batting.playerID
+HAVING sum(Batting.HR)>= 600
+ORDER BY sum(Batting.HR) DESC"
+sqldf(query)
+
+#Finds people with the average salary over 1 million and the name BOB
+query<-"SELECT namefirst,nameLast, avg(salary)
+FROM Salaries INNER JOIN Master
+On Salaries.playerID=Master.playerID
+WHERE nameFirst='Bob'
+GROUP BY Salaries.playerID
+HAVING avg(salary) > 1000000
+ORDER BY avg(salary) DESC" 
+sqldf(query)
+
+
 
 ```
 
