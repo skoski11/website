@@ -2,7 +2,7 @@
 title: "SQL"
 output: html_document
 ---
-```{r}
+```{r setup, include=FALSE}
 library(Lahman)
 library(sqldf)
 ```
@@ -26,15 +26,16 @@ Patriots | AFC
 Buccaneers | AFC
 Eagles | NFC
 
-
+This is an example of inserting an image and resizing it in the file.
 <img src="gsd.jpg" width="300"/>
 
 
-Baseball Facts
-First Fact, I absolutely hate baseball.
 
-These are examples of ques run that gather different data and also show how we can organize how the information will be displayed, example the 4th one.
-
+These are a few examples of running queries and how to select certain sets of data
+and also choosing which directories to search the data from, and then run an sqldf
+to run the results and display the query. Another technique used in these is sorting
+the data we display using the WHERE statement to make specific requirements for the data
+to meet in order to be displayed
 ```{r}
 query<-"SELECT playerID,yearID,teamID,HR FROM Batting
 WHERE teamID='PHI' and yearID>=1970 and yearID<=1979 and HR>= 30"
@@ -47,37 +48,68 @@ sqldf(query)
 query<-"SELECT playerID,yearID,teamID,HR,SO FROM Batting
 WHERE HR> 40 and SO<=60"
 sqldf(query)
+```
 
+
+This chunk of code is an example that shows a way to order the final results
+In a descending order, as opposed to the default asceding order it would
+return the data in.
+```{r}
 query<-"SELECT playerID,teamID,yearID,HR FROM Batting
 WHERE HR>50
 ORDER BY HR DESC"
 sqldf(query)
+```
 
-
+This query is an example where we searched for the players who had the fewest 
+Strike outs in a single season, but we used another criteria that they had to have
+also had atleast 400 at bats in the season as well.
+```{r}
 # This finds and sorts who has had the fewest strikeouts in a season with atleast 400 at bats
 query<-"SELECT teamID, playerID, yearID, SO, AB FROM Batting
 WHERE AB>= 400 and SO< 10
 ORDER BY SO"
 sqldf(query)
-
+```
+This line of code is an example of specifically queing for the information
+about a certain player. You must find what the specific player's ID is so 
+you can search specifically for that person's information if you search and group 
+information based on the player's ID
+```{r}
 query<-"SELECT playerID,sum(HR) FROM Batting
 WHERE playerID='ruthba01'
 GROUP BY playerID"
 sqldf(query)
-
+```
+This is a very important mechanic when it comes to searching for data. When you filter 
+specific information, you use the term WHERE if you filter before grouping data.If you are grouping
+AFTER you group information, then you use the HAVING command to filter information. This also uses a relatively new
+technique of gathering the sum of one of the results. In this, they sum the total number of HR's and groups it by ID's
+of each player
+```{r}
 #Filter before group is where, and filter after group uses having
 query<-"SELECT playerID,sum(HR) FROM Batting
 GROUP BY playerID
 HAVING sum(HR)>= 600
 ORDER BY sum(HR) DESC"
 sqldf(query)
+```
+This query shows the use of the avg function which is used similariliy to the sum function
+except it gathers the avg instead of the sum of the numbers.
+```{r}
 #sum() avg() max() min() are all useable fucntions
 query<-"SELECT playerID,avg(HR) FROM Batting
 GROUP BY playerID
 HAVING avg(HR)>= 30
 ORDER BY avg(HR) DESC"
 sqldf(query)
+```
 
+This next series of data queries involve a new mechanic we learned that involves
+drawing data from multiple different index at one time. In this, one of the issues
+is where multiple index have the same information, and you must make a comparison
+to equate the two ID's. In this case, the playerID is connected in Batting and Master.
+```{r}
 #This is us testing how to draw from multiple index at one
 #Time and combine responses from these
 query<-"SELECT nameFirst, nameLast, teamID, yearID, HR
@@ -86,7 +118,10 @@ On Batting.playerID=Master.playerID
 WHERE Batting.playerID='ruthba01'"
 sqldf(query)
 #Draw from two queries
-
+```
+This is another example where the draw from two queries, and in this one they replace
+the playerID so that the First and Last name are displayed instead
+```{r}
 #Drew from two querries and replaced playerID with
 #Real name
 query<-"SELECT nameFirst, nameLast, teamID, yearID, HR
@@ -95,13 +130,20 @@ On Batting.playerID=Master.playerID
 WHERE HR> 50
 ORDER BY HR DESC"
 sqldf(query)
+```
 
+This continues to build on what we worked on in the last query, and it will replace both
+the player and the teams full names
+```{r}
 query<-"SELECT playerID,name,Batting.yearID, Batting.HR
 FROM Batting INNER JOIN Teams
 On Batting.teamID=Teams.teamID and Batting.yearID=Teams.yearID
 WHERE playerID='ruthba01'"
 sqldf(query)
-
+```
+This is an extensive combination of most of what we have learned and it combines 3 different
+index information, and it compares them specifically. In the SELECT portion we specify that the yearID and HR's will be selected from the Batting index. This will provide all the information about Babe Ruth.
+```{r}
 #This gives all the full data of all of Babe Ruth's Seasons with whole
 #Names for his teams and himself
 query<-"SELECT nameFirst,nameLast,name,Batting.yearID,Batting.HR 
@@ -110,8 +152,11 @@ On Batting.playerID=Master.playerID) INNER JOIN Teams
 On Batting.teamID=Teams.teamID AND Batting.yearID=Teams.yearID
 WHERE Batting.playerID ='ruthba01'"
 sqldf(query)
-
-
+```
+These next two functions continue to combine everything we have learned. It practices grouping, collecting sums from specific indexes, and ordering the data in different areas
+that range from number of home runs to the salaries of the players, or even just their 
+first name. 
+```{r}
 #Finds all people ever with over 600 career homeruns and gives their full name
 #and team name
 query<-"SELECT nameFirst,nameLast,name,sum(Batting.HR),Batting.yearID 
@@ -132,8 +177,6 @@ GROUP BY Salaries.playerID
 HAVING avg(salary) > 1000000
 ORDER BY avg(salary) DESC" 
 sqldf(query)
-
-
 
 ```
 
