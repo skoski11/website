@@ -6,31 +6,13 @@ output: html_document
 library(Lahman)
 library(sqldf)
 ```
-#Level one header
-##leavel 2 header
-###level 3 header
 
-You can type normally to write paragraphs that will appear in your documents
-
-* Item one in a list
-* Item 2
-* Item 3
-* Item 4
-
-This is how to make a table with multiple columns
-
-column 1 | cloumn 2
----|---
-Lions | NFC
-Patriots | AFC
-Buccaneers | AFC
-Eagles | NFC
 
 This is an example of inserting an image and resizing it in the file.
 <img src="gsd.jpg" width="300"/>
 
 
-
+#Example of using SQLDF to Query
 These are a few examples of running queries and how to select certain sets of data
 and also choosing which directories to search the data from, and then run an sqldf
 to run the results and display the query. Another technique used in these is sorting
@@ -50,7 +32,7 @@ WHERE HR> 40 and SO<=60"
 sqldf(query)
 ```
 
-
+#How to Order by Descending
 This chunk of code is an example that shows a way to order the final results
 In a descending order, as opposed to the default asceding order it would
 return the data in.
@@ -60,7 +42,7 @@ WHERE HR>50
 ORDER BY HR DESC"
 sqldf(query)
 ```
-
+#Searching with more criteria
 This query is an example where we searched for the players who had the fewest 
 Strike outs in a single season, but we used another criteria that they had to have
 also had atleast 400 at bats in the season as well.
@@ -71,6 +53,8 @@ WHERE AB>= 400 and SO< 10
 ORDER BY SO"
 sqldf(query)
 ```
+
+#Searching for all information of Specific player
 This line of code is an example of specifically queing for the information
 about a certain player. You must find what the specific player's ID is so 
 you can search specifically for that person's information if you search and group 
@@ -81,6 +65,8 @@ WHERE playerID='ruthba01'
 GROUP BY playerID"
 sqldf(query)
 ```
+#Filtering with Grouping versus HAving
+
 This is a very important mechanic when it comes to searching for data. When you filter 
 specific information, you use the term WHERE if you filter before grouping data.If you are grouping
 AFTER you group information, then you use the HAVING command to filter information. This also uses a relatively new
@@ -94,6 +80,8 @@ HAVING sum(HR)>= 600
 ORDER BY sum(HR) DESC"
 sqldf(query)
 ```
+
+#Use of Average function
 This query shows the use of the avg function which is used similariliy to the sum function
 except it gathers the avg instead of the sum of the numbers.
 ```{r}
@@ -104,7 +92,7 @@ HAVING avg(HR)>= 30
 ORDER BY avg(HR) DESC"
 sqldf(query)
 ```
-
+#Drawing from multiple index at once
 This next series of data queries involve a new mechanic we learned that involves
 drawing data from multiple different index at one time. In this, one of the issues
 is where multiple index have the same information, and you must make a comparison
@@ -119,6 +107,8 @@ WHERE Batting.playerID='ruthba01'"
 sqldf(query)
 #Draw from two queries
 ```
+
+#Drawing from 2 sources and overwriting specific Information
 This is another example where the draw from two queries, and in this one they replace
 the playerID so that the First and Last name are displayed instead
 ```{r}
@@ -131,7 +121,7 @@ WHERE HR> 50
 ORDER BY HR DESC"
 sqldf(query)
 ```
-
+#Replace multiple datas with new data
 This continues to build on what we worked on in the last query, and it will replace both
 the player and the teams full names
 ```{r}
@@ -141,6 +131,8 @@ On Batting.teamID=Teams.teamID and Batting.yearID=Teams.yearID
 WHERE playerID='ruthba01'"
 sqldf(query)
 ```
+
+#Combining everything We have Learned
 This is an extensive combination of most of what we have learned and it combines 3 different
 index information, and it compares them specifically. In the SELECT portion we specify that the yearID and HR's will be selected from the Batting index. This will provide all the information about Babe Ruth.
 ```{r}
@@ -153,6 +145,8 @@ On Batting.teamID=Teams.teamID AND Batting.yearID=Teams.yearID
 WHERE Batting.playerID ='ruthba01'"
 sqldf(query)
 ```
+
+#More final Examples
 These next two functions continue to combine everything we have learned. It practices grouping, collecting sums from specific indexes, and ordering the data in different areas
 that range from number of home runs to the salaries of the players, or even just their 
 first name. 
@@ -167,7 +161,10 @@ GROUP BY Batting.playerID
 HAVING sum(Batting.HR)>= 600
 ORDER BY sum(Batting.HR) DESC"
 sqldf(query)
+```
 
+
+```{r}
 #Finds people with the average salary over 1 million and the name BOB
 query<-"SELECT namefirst,nameLast, avg(salary)
 FROM Salaries INNER JOIN Master
